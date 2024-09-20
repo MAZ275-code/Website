@@ -66,10 +66,14 @@ async function handleLoginSubmit(e) {
   const username = e.target.username.value;
   const password = e.target.password.value;
 
-  doLogin({ username, password });
+  const loginSuccess = await doLogin({ username, password });
+  if (!loginSuccess) {
+    setError("Invalid username or password");
+  }
 }
 
 async function doLogin({ username, password }) {
+  try{
   const res = await apiCall("/v1/auth/login", {
     method: "POST",
     headers: {
@@ -100,6 +104,12 @@ async function doLogin({ username, password }) {
   );
 
   onLoginChanged();
+  return true;
+  } catch (err) {
+    console.error("Login error: ", err);
+    //setError("An error occurred.");
+    return false;
+  }
 }
 
 function checkIfLoggedIn() {
