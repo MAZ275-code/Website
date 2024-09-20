@@ -15,6 +15,7 @@ connection.connect((err) => {
   console.log("Connected to MySQL database");
 });
 
+//connection
 async function dbAsync(query, values) {
   return new Promise((resolve, reject) => {
     connection.query(query, values, (err, results) => {
