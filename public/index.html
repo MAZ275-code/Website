@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            z-index: 1;
+            animation: float 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        body::before {
+            top: 40px;
+            right: 50px;
+        }
+
+        body::after {
+            top: 400px;
+            left: 50px;
+            animation-duration: 15s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(20px);
+            }
+        }
+
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-indigo-500 to-blue-300 min-h-screen flex-1">
+    <div id="signup-container" class="hidden flex flex-1 items-center min-h-screen justify-center">
+        <div class="w-full max-w-md bg-white rounded-xl p-4 border border-gray-300">
+            <div class="space-y-2">
+                <p class="text-2xl font-bold text-center">Signup</p>
+                <p class="text-center">Already have an account? <button id="show-login-form"
+                        class="text-zinc-500 font-semibold">Login</button></p>
+            </div>
+
+            <form id="signup-form" class="space-y-4 mt-4">
+                <div class="space-y-2">
+                    <label class="block font-semibold" for="name">Name</label>
+                    <input class="block px-2 py-1.5 w-full border border-gray-200 rounded" placeholder="Enter your name"
+                        name="name" required />
+                </div>
+                <div class="space-y-2">
+                    <label class="block font-semibold" for="username">Username</label>
+                    <input class="block px-2 py-1.5 w-full border border-gray-200 rounded"
+                        placeholder="Enter your username" required name="username" />
+                </div>
+                <div class="space-y-2">
+                    <label class="block font-semibold" for="password">Password</label>
+                    <input class="block px-2 py-1.5 w-full border border-gray-200 rounded" type="password"
+                        placeholder="Enter your password" name="password" required />
+                </div>
+                <div class="space-y-2">
+                    <label class="block font-semibold" for="role">Role</label>
+                    <select class="block px-2 py-1.5 w-full border border-gray-200 rounded" name="role" required>
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <p id="signup-error" class="text-red-500 text-sm tracking-wider font-semibold"></p>
+
+                <button type="submit" class="w-full rounded-lg bg-zinc-800 text-white py-2">
+                    Signup
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="login-container" class="flex flex-1 items-center min-h-screen justify-center">
+        <div class="w-full max-w-md bg-white rounded-xl p-4 border border-gray-300">
+            <div class="space-y-2">
+                <p class="text-2xl font-bold text-center">Login</p>
+                <p class="text-center">Don't have an account? <button id="show-signup-form"
+                        class="text-zinc-500 font-semibold">Signup</button></p>
+            </div>
+
+            <form id="login-form" class="space-y-4 mt-4">
+                <div class="space-y-2">
+                    <label class="block font-semibold" for="username">Username</label>
+                    <input class="block px-2 py-1.5 w-full border border-gray-200 rounded" id="username"
+                        placeholder="Enter your username" required />
+                </div>
+                <div class="space-y-2">
+                    <label class="block font-semibold" for="password">Password</label>
+                    <input class="block px-2 py-1.5 w-full border border-gray-200 rounded" id="password" type="password"
+                        placeholder="Enter your password" required />
+                </div>
+
+                <p id="login-error" class="text-red-500 text-sm tracking-wider font-semibold"></p>
+
+                <button type="submit" class="w-full rounded-lg bg-zinc-800 text-white py-2">
+                    Log in
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <button type="button" class="absolute top-4 right-4 bg-red-600 text-white py-1.5 px-3 rounded-lg"
+        id="logout-button">Logout</button>
+
+
+    <div id="admin-container">
+        <div class="m-4 space-y-2">
+            <h1 class="text-3xl font-bold text-center">Admin</h1>
+            <h2 class="text-xl font-semibold pb-2 text-center">Welcome <span class="user-display-name"></span></h2>
+            <div class="bg-white rounded-xl p-4 space-y-2">
+                <h3 class="text-lg font-semibold">Teachers</h3>
+                <table id="teachers-table" class="w-full text-sm text-left text-gray-800">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
+                        <tr>
+                            <th class="px-6 py-3">ID</th>
+                            <th class="px-6 py-3">Name</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 space-y-2">
+                <h3 class="text-lg font-semibold">Courses</h3>
+                <table id="admin-courses-table" class="w-full text-sm text-left text-gray-800">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
+                        <tr>
+                            <th class="px-6 py-3">ID</th>
+                            <th class="px-6 py-3">Course Name</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 space-y-2">
+                <h3 class="text-lg font-semibold">Assign a course</h3>
+                <form id="assign-course-form" class="space-y-4 mt-4">
+                    <div class="space-y-2">
+                        <label class="font-semibold mr-2" for="teacherId">Pick teacher</label>
+                        <select required id="assignCourse-teacherId" name="teacherId"></select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="font-semibold mr-2" for="courseId">Pick course</label>
+                        <select required id="assignCourse-courseId" name="courseId"></select>
+                    </div>
+                    <button type="submit" class="rounded-lg bg-zinc-800 text-white py-1.5 px-3">
+                        Assign Couse
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="teacher-container">
+        <div class="m-4 space-y-2">
+            <h1 class="text-3xl font-bold text-center">Teacher</h1>
+            <h2 class="text-xl font-semibold pb-2 text-center">Welcome <span class="user-display-name"></span></h2>
+            <div class="bg-white rounded-xl p-4 space-y-2">
+                <h3 class="text-lg font-semibold">Assigned Courses</h3>
+                <table id="teacher-courses-table" class="w-full text-sm text-left text-gray-800">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
+                        <tr>
+                            <th class="px-6 py-3">ID</th>
+                            <th class="px-6 py-3">Name</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 space-y-2">
+                <h3 class="text-lg font-semibold">Post a question</h3>
+                <form id="post-question-form" class="space-y-4 mt-4">
+                    <div class="space-y-2">
+                        <label class="font-semibold mr-2" for="courseId">Pick course</label>
+                        <select id="postQuestion-courseId" name="courseId" required></select>
+                    </div>
+                    <div class="space-y-2 flex items-center">
+                        <label class="font-semibold mr-2" for="question">Question</label>
+                        <input id="postQuestion-question" name="question" required
+                            class="px-2 py-1.5 flex-1 border border-gray-200 rounded" />
+                    </div>
+                    <button type="submit" class="rounded-lg bg-zinc-800 text-white py-1.5 px-3">
+                        Post question
+                    </button>
+                </form>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 space-y-2">
+                <h3 class="text-lg font-semibold">Evaluate Answers</h3>
+                <table id="teacher-answers-table" class="w-full text-sm text-left text-gray-800">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
+                        <tr>
+                            <th class="px-6 py-3">Question</th>
+                            <th class="px-6 py-3">Answer</th>
+                            <th class="px-6 py-3">Student Name</th>
+                            <th class="px-6 py-3">Is Correct?</th>
+                            <th class="px-6 py-3">Marked</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div id="student-container">
+        <div class="m-4 space-y-2">
+            <h1 class="text-3xl font-bold text-center">Student</h1>
+            <h2 class="text-xl font-semibold pb-2 text-center">Welcome <span class="user-display-name"></span></h2>
+
+            <div class="bg-white rounded-xl p-4 space-y-2">
+                <h3 class="text-xl font-semibold text-center">View questions</h3>
+                    <form id="select-course-form" class="space-y-4 mt-4 text-center">
+                        <div class="space-y-2">
+                            <label class="font-semibold mr-5 text-center text-lg" for="courseId">Pick a course</label>
+                            <select id="viewQuestions-courseId" name="courseId" required class="w-64 h-10 text-lg p-2">
+                            </select>
+                        </div>
+                        <button type="submit" class="rounded-lg bg-zinc-800 text-white py-2 px-4 text-lg">
+                            View questions
+                        </button>
+                    </form>
+            </div>
+
+            <div id="student-view-questions" class="space-y-2">
+
+            </div>
+        </div>
+    </div>
+
+    <script src="./frontend.js"></script>
+</body>
+
+</html>
